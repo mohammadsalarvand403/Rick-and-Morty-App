@@ -1,6 +1,6 @@
-import { allCharacters } from "../data/data";
+import { allCharacters, character, episodes } from "../data/data";
 import "./App.css";
-import CharecterDetil from "./components/CharecterDetil";
+import CharecterDetil from "./components/CharacterDeteil";
 import CharecterList from "./components/CharacterList";
 import Navbar from "./components/Navbar";
 
@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <div className="main">
         <CharecterList charecters={allCharacters} />
-        <CharecterDetil />
+        <CharecterDetil charecter={character} episodes={episodes} />
       </div>
     </div>
   );
