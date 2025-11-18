@@ -1,0 +1,14 @@
+function Loding() {
+  return (
+    <div class="🤚">
+      <div class="👉"></div>
+      <div class="👉"></div>
+      <div class="👉"></div>
+      <div class="👉"></div>
+      <div class="🌴"></div>
+      <div class="👍"></div>
+    </div>
+  );
+}
+
+export default Loding;
