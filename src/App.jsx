@@ -10,7 +10,7 @@ function App() {
   const [characters, setCharaters] = useState([]);
   const [isLoding, setIsLoding] = useState(false);
   const [query, setQuery] = useState("");
-
+  const [selectedId, setSelectedId] = useState();
   useEffect(() => {
     async function FetcheData() {
       try {
@@ -32,21 +32,31 @@ function App() {
     // }
     FetcheData();
   }, [query]);
-  return (
-    <div className="app">
-      <Toaster />
-      <Navbar>
-        <Search quary={query} setQuery={setQuery} />
-        <SearchResult numOfResult={characters.length} />
-      </Navbar>
-      <Main characters={characters}>
-        <CharecterList characters={characters} isLoding={isLoding} />
-        <CharecterDetil />
-      </Main>
-    </div>
-  );
-}
+  const handlerSelcteCharcter = (id) => {
+    setSelectedId((prevId) => (prevId === id ? null : id));
+  };
 
+  {
+    return (
+      <div className="app">
+        <Toaster />
+        <Navbar>
+          <Search quary={query} setQuery={setQuery} />
+          <SearchResult numOfResult={characters.length} />
+        </Navbar>
+        <Main characters={characters}>
+          <CharecterList
+            characters={characters}
+            isLoding={isLoding}
+            onSelectCharacter={handlerSelcteCharcter}
+            selectedId={selectedId}
+          />
+          <CharecterDetil selectedId={selectedId} />
+        </Main>
+      </div>
+    );
+  }
+}
 export default App;
 
 function Main({ children }) {
