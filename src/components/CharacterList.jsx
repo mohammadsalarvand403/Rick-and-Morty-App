@@ -45,7 +45,11 @@ function Character({ item, onSelectCharacter, selectedId }) {
         <span> - {item.species}</span>
       </div>
       <button className="icon red" onClick={() => onSelectCharacter(item.id)}>
-        {selectedId ? <EyeSlashIcon /> : <EyeIcon className="icon" />}
+        {selectedId === item.id ? (
+          <EyeSlashIcon />
+        ) : (
+          <EyeIcon className="icon" />
+        )}
       </button>
     </div>
   );

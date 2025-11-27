@@ -1,13 +1,13 @@
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
-import { episodes } from "../../data/data";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loding from "./Loding";
 import toast from "react-hot-toast";
 
-function CharacterDetail({ selectedId }) {
+function CharacterDetail({ selectedId, onAddFavourites, isAddToFavourite }) {
   const [character, setCharaters] = useState(null);
   const [isLoding, setIsLoding] = useState(false);
+  const [episodes, setEpisodes] = useState([]);
   useEffect(() => {
     async function FetcheData() {
       try {
@@ -16,6 +16,12 @@ function CharacterDetail({ selectedId }) {
           `https://rickandmortyapi.com/api/character/${selectedId}`
         );
         setCharaters(data);
+
+        const episodeId = data.episode.map((e) => e.split("/").at(-1));
+        const { data: episodeData } = await axios.get(
+          `https://rickandmortyapi.com/api/episode/${episodeId}`
+        );
+        setEpisodes([episodeData].flat().slice(0, 5));
       } catch (error) {
         toast.error(error.response.data.error);
       } finally {
@@ -63,7 +69,16 @@ function CharacterDetail({ selectedId }) {
             <p>{character.location.name}</p>
           </div>
           <div className="actions">
-            <button className="btn btn--primary">Add To Favourite</button>
+            {isAddToFavourite ? (
+              <p>already Add To Favourite💖</p>
+            ) : (
+              <button
+                onClick={() => onAddFavourites(character)}
+                className="btn btn--primary"
+              >
+                Add To Favourite
+              </button>
+            )}
           </div>
         </div>
       </div>
