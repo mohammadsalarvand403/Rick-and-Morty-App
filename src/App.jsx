@@ -13,16 +13,21 @@ function App() {
   const [selectedId, setSelectedId] = useState();
   const [favourites, setFavourites] = useState([]);
   useEffect(() => {
+    const contorller = new AbortController();
+    const signal = contorller.signal;
     async function FetcheData() {
       try {
         setIsLoding(true);
         const { data } = await axios.get(
-          `https://rickandmortyapi.com/api/character?name=${query}`
+          `https://rickandmortyapi.com/api/character?name=${query}`,
+          { signal }
         );
         setCharaters(data.results.slice(0, 5));
       } catch (err) {
-        setCharaters([]);
-        toast.error(err.response.data.error);
+        if (!axios.isCancel()) {
+          setCharaters([]);
+          toast.error(err.response.data.error);
+        }
       } finally {
         setIsLoding(false);
       }
@@ -32,6 +37,9 @@ function App() {
     //   return;
     // }
     FetcheData();
+    return () => {
+      contorller.abort();
+    };
   }, [query]);
   const handlerSelcteCharcter = (id) => {
     setSelectedId((prevId) => (prevId === id ? null : id));
